@@ -2,11 +2,11 @@ import customtkinter
 import customtkinter as ctk
 import tkinter
 from tkinter import ttk
-from database.db import Database
+from database.db import Database, add_text_to_label
 
 
 class FunctionsWindow(ctk.CTk):
-    def __init__(self, parent, title):
+    def __init__(self, parent, title, text_label):
         super().__init__()
         self.title = title
         self.db_obj = Database()
@@ -16,6 +16,7 @@ class FunctionsWindow(ctk.CTk):
         self.root.resizable(False, False)
         customtkinter.set_appearance_mode("light")
         customtkinter.set_default_color_theme("green")
+        self.text_label = text_label
         self.draw_widgets()
         self.grab_focus()
 
@@ -74,8 +75,10 @@ class FunctionsWindow(ctk.CTk):
             for line in active_count_data:
                 self.tree.insert("", tkinter.END, values=list(line.values()), tags=("odd",))
             self.tree.pack(fill=tkinter.BOTH, expand=1)
+            add_text_to_label("Employee records found", self.text_label)
         except IndexError:
-            print("Specialists by position or not, or the name of the position is entered incorrectly")
+            add_text_to_label("Specialists by position or not, or the name of the position is entered incorrectly",
+                              self.text_label)
 
     def draw_widgets(self) -> None:
         # Styles exec

@@ -8,39 +8,45 @@ from PIL import Image
 class MainWindow(ctk.CTk):
     def __init__(self) -> None:
         super().__init__()
-        self.geometry("1040x800")
+        self.geometry("1040x1050")
         self.resizable(False, False)
         self.title("Registration of tourist vouchers")
         customtkinter.set_appearance_mode("light")
         customtkinter.set_default_color_theme("green")
+        self.scrollable_frame = ctk.CTkScrollableFrame(self, orientation="vertical", width=1017, fg_color="white",
+                                                       label_text="Результаты запросов", label_fg_color="white")
+        self.scrollable_frame.pack()
+        self.scrollable_frame.place(x=0, y=800)
+        self.text_label = ctk.CTkLabel(self.scrollable_frame, text="")
+        self.text_label.pack()
         self.draw_widgets()
 
     def open_arrival_cities(self) -> None:
-        window: TableWindow = TableWindow(self, "arrival_cities")
+        window: TableWindow = TableWindow(self, "arrival_cities", self.text_label)
 
     def open_customers(self) -> None:
-        window: TableWindow = TableWindow(self, "customers")
+        window: TableWindow = TableWindow(self, "customers", self.text_label)
 
     def open_flights(self) -> None:
-        window: TableWindow = TableWindow(self, "flights")
+        window: TableWindow = TableWindow(self, "flights", self.text_label)
 
     def open_positions(self) -> None:
-        window: TableWindow = TableWindow(self, "positions")
+        window: TableWindow = TableWindow(self, "positions", self.text_label)
 
     def open_staff(self) -> None:
-        window: TableWindow = TableWindow(self, "staff")
+        window: TableWindow = TableWindow(self, "staff", self.text_label)
 
     def open_tours(self) -> None:
-        window: TableWindow = TableWindow(self, "tours")
+        window: TableWindow = TableWindow(self, "tours", self.text_label)
 
     def open_travel_packages(self) -> None:
-        window: TableWindow = TableWindow(self, "travel_packages")
+        window: TableWindow = TableWindow(self, "travel_packages", self.text_label)
 
     def open_types_of_tours(self) -> None:
-        window: TableWindow = TableWindow(self, "types_of_tours")
+        window: TableWindow = TableWindow(self, "types_of_tours", self.text_label)
 
     def open_functions(self) -> None:
-        window: FunctionsWindow = FunctionsWindow(self, "Functions and procedures")
+        window: FunctionsWindow = FunctionsWindow(self, "Functions and procedures", self.text_label)
 
     def draw_widgets(self) -> None:
         # Main scheme
@@ -48,6 +54,8 @@ class MainWindow(ctk.CTk):
         scheme_img = customtkinter.CTkImage(Image.open("./assets/main.png"), size=(1040, 800))
         scheme_label = ctk.CTkLabel(self, image=scheme_img, text="")
         scheme_label.pack(expand=1)
+        scheme_label.place(x=0, y=0)
+
         # Arrival cities button
         arrival_cities_button = ctk.CTkButton(
             self,

@@ -2,6 +2,15 @@ import pymysql
 from data.auth_data import *
 
 
+def add_text_to_label(new_text, text_label):
+    current_text = text_label.cget("text")
+    if current_text != '':
+        new_text = current_text + "\n" + new_text
+        text_label.configure(text=new_text)
+    else:
+        text_label.configure(text=new_text)
+
+
 class Database:
     @staticmethod
     def get_connection() -> pymysql.Connection:
@@ -52,6 +61,20 @@ class Database:
                 cursor.execute(sql)
             con.commit()
             return "Successful delete!"
+        except Exception as ex:
+            return f"Something went wrong! {ex}"
+        finally:
+            con.close()
+
+    def update_the_data_in_the_table(self, keys: list, values: list, title: str) -> str:
+        set_values = ", ".join([f"{keys[i]} = '{values[i]}'" for i in range(1, len(keys))])
+        try:
+            con = self.get_connection()
+            with con.cursor() as cursor:
+                query = f"UPDATE {title} SET {set_values} WHERE {keys[0]} = {values[0]};"
+                cursor.execute(query)
+            con.commit()
+            return "Successful update!"
         except Exception as ex:
             return f"Something went wrong! {ex}"
         finally:
